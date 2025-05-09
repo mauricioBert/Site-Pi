@@ -87,7 +87,7 @@ export default function NavBar() {
           </Link>
         </div>
         <div className="navIcons-container">
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-9">
             <div
               className={`navIcon-container ${
                 isActive("/") ? "rounded-3xl bg-cinza-principal brightness" : ""
@@ -132,9 +132,7 @@ export default function NavBar() {
                 <img alt="" className="navIcon " src="/icons/Usuarios.svg" />
               </Link>
             </div>
-          </div>
-
-          <div
+            <div
               className={`navIcon-container ${
                 isActive("/sugestao")
                   ? "rounded-3xl bg-cinza-principal brightness duration-300 "
@@ -146,9 +144,10 @@ export default function NavBar() {
               </Link>
               {/* AQUI */}
             </div>
-          <div className="flex flex-col justify-center gap-5">
+          </div>
 
           
+          <div className="flex flex-col justify-center gap-5">
 
             <div
               className={`navIcon-container ${

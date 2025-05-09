@@ -7,6 +7,7 @@ import axios from "axios";
 import url from "../services/url"; // Supondo que o url seja o serviço para a API
 import { useRouter } from "next/router";
 import Head from "next/head";
+import CardInfo from "@/components/card/card";
 const Bloqueios = () => {
   const [urlInput, setUrlInput] = useState("");
   const [termoInput, setTermoInput] = useState("");
@@ -114,13 +115,18 @@ const Bloqueios = () => {
           <HeaderBar usuario={usuario} />
           <section className="flex flex-col gap-5 overflow-hidden">
             {/* Dashboard Principal */}
-            <section className="flex flex-row px-5 lg:px-2 mt-5 lg:mt-0 gap-1 max-w-">
+            {/* <section className="flex flex-row px-5 lg:px-2 mt-5 lg:mt-0 gap-1 max-w-">
               <div className="bg-gradient-to-r from-laranja-s h-fit to-laranja-e p-5 rounded-xl">
                 <p className="text-2xl text-white">
                   Acesso aos dados de bloqueio manuais e automáticos.
                 </p>
               </div>
-            </section>
+            </section> */}
+            <div className="flex flex-col px-4 gap-1">
+
+            <CardInfo  titulo={"Bloqueios"} subtitulo={"Acesso aos dados de bloqueio manuais e automáticos."} />
+            </div>
+            
             <section className="flex flex-col-reverse lg:grid lg:grid-cols-3 mb-10 gap-10 lg:gap-2 lg:px-2 lg:mb-0 px-5">
               <BlockList />
               <div className="flex flex-col w-full col-span-1">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import url from "../services/url";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 
 const ListSujestao = () => {
   const [bloqueios, setBloqueios] = useState([]);
@@ -30,49 +31,49 @@ const ListSujestao = () => {
   };
 
   // Função para deletar uma indexacao
-  const handleDeleteIndexacao = async (bloqueioId) => {
-    if(window.confirm("Tem certeza que deseja excluir este bloqueio?")) {
-      try {
-        const token = localStorage.getItem("token");
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const response = await axios.delete(`${url}/bloqueios/${bloqueioId}`);
-        if(response.status === 204) {
-          alert("Indexação excluída com sucesso!");
-          fetchBloqueios(); // Atualiza a lista após excluir
-        } else {
-          alert("Erro ao excluir a indexação!");
-        }
-      } catch (error) {
-        console.error("Error deleting indexacao:", error);
-        alert("Erro ao excluir a indexação!");
-      }
-    }
-  };
+  // const handleDeleteIndexacao = async (bloqueioId) => {
+  //   if(window.confirm("Tem certeza que deseja excluir este bloqueio?")) {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //       const response = await axios.delete(`${url}/bloqueios/${bloqueioId}`);
+  //       if(response.status === 204) {
+  //         alert("Indexação excluída com sucesso!");
+  //         fetchBloqueios(); // Atualiza a lista após excluir
+  //       } else {
+  //         alert("Erro ao excluir a indexação!");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error deleting indexacao:", error);
+  //       alert("Erro ao excluir a indexação!");
+  //     }
+  //   }
+  // };
 
-  // Função para confirmar e executar a troca de status
-  const handleToggleConfirm = async () => {
-    if (!selectedBloqueio) return;
-    try {
-      const token = localStorage.getItem("token");
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.put(
-        `${url}/bloqueios/${selectedBloqueio._id}`,
-        {
-          flag: !selectedBloqueio.flag,
-        }
-      );
+  // // Função para confirmar e executar a troca de status
+  // const handleToggleConfirm = async () => {
+  //   if (!selectedBloqueio) return;
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //     const response = await axios.put(
+  //       `${url}/bloqueios/${selectedBloqueio._id}`,
+  //       {
+  //         flag: !selectedBloqueio.flag,
+  //       }
+  //     );
 
-      if (response.data.success) {
-        fetchBloqueios();
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar bloqueio:", error);
-      alert("Erro ao atualizar o status do bloqueio");
-    } finally {
-      setShowConfirmDialog(false);
-      setSelectedBloqueio(null);
-    }
-  };
+  //     if (response.data.success) {
+  //       fetchBloqueios();
+  //     }
+  //   } catch (error) {
+  //     console.error("Erro ao atualizar bloqueio:", error);
+  //     alert("Erro ao atualizar o status do bloqueio");
+  //   } finally {
+  //     setShowConfirmDialog(false);
+  //     setSelectedBloqueio(null);
+  //   }
+  // };
 
   // Função para abrir o diálogo de confirmação
   const handleStatusChange = (bloqueio) => {
@@ -104,29 +105,32 @@ const ListSujestao = () => {
             </tr>
           </thead>
           <tbody className="text-azul-text">
-            {bloqueios.map((bloq) => (
-              <tr key={bloq._id} className="justify-self-center border-black">
-                <td className="text-sm p-1 font-bold border-b border-black overflow-hidden text-ellipsis whitespace-nowrap max-w-60">
-                  {bloq.urlWeb}
-                </td>
-                <td className="text-sm p-1 text-nowrap border-b border-black">
-                  {formatarData(bloq.dataHora)}
-                </td>
-                <td className=" text-sm p-1 font-bold border-b border-black">
-                  {bloq.tipoInsercao}
-                </td>
-                <td className=" text-sm p-1  border-b border-black">
-                  
-                    {bloq.flag ? "Bloqueado" : "Desbloqueado"}
-                  
-                </td>
-                <td className="p-1 border-b border-black">
-                 
-      
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {bloqueios.map((bloq) => (
+    <tr
+      key={bloq._id}
+      onClick={() => window.location.href = `/DetalhesSujes/detalhesSujes`} // `/detalhes/${bloq._id}`
+      className="border-b border-black text-sm text-center cursor-pointer hover:bg-blue-100 transition-colors"
+    >
+      <td className="p-2 font-bold max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
+        {bloq.urlWeb}
+      </td>
+      <td className="p-2 whitespace-nowrap">
+        {formatarData(bloq.dataHora)}
+      </td>
+      <td className="p-2 font-bold">
+        {bloq.tipoInsercao}
+      </td>
+      <td className="p-2">
+        {bloq.flag ? "Bloqueado" : "Desbloqueado"}
+      </td>
+      <td className="p-2">
+        {/* coluna opcional */}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+
         </table>
       </div>
 

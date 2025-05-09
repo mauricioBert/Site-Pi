@@ -6,6 +6,7 @@ import axios from "axios";
 import url from "@/services/url";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import CardInfo from "@/components/card/card";
 const Usuarios = () => {
   const router = useRouter();
   const [users, setUsers] = useState([]);
@@ -63,12 +64,13 @@ const Usuarios = () => {
         <section className="main-container">
            <HeaderBar usuario={usuario} />
           <section className="flex  px-5 mt-5 gap-1  relative">
-            <div className="bg-gradient-to-r from-laranja-s h-fit to-laranja-e p-5 rounded-xl">
+            {/* <div className="bg-gradient-to-r from-laranja-s h-fit to-laranja-e p-5 rounded-xl">
               <p className="text-2xl lg:text-4xl text-white">Gerenciamento de Usuários</p>
               <p className="text-lg lg:text-2xl text-white">
                 Administração das permissões e cadastro de perfis secundários.
               </p>
-            </div>
+            </div> */}
+            <CardInfo  titulo={"Gerenciamento de Usuários"} subtitulo={"Administração das permissões e cadastro de perfis secundários."} />
           </section>
           <section className="flex flex-col md:flex-row mt-5 px-5 flex-wrap gap-5">
             {users.map((user) => (

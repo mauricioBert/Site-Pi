@@ -9,6 +9,7 @@ import ActiveDevices from "../components/ActiveDevices.js";
 import Calendar from "react-calendar";
 import FooterContent from "../components/FooterContent.js";
 import RecentActivity from "../components/RecentActivity.js";
+import CardInfo from "@/components/card/card.js";
 
 export default function Home() {
   const [value, onChange] = useState(new Date());
@@ -51,7 +52,8 @@ export default function Home() {
           <HeaderBar usuario={usuario} />
           <section className="home-container ">
             <div className="dashLeft-container">
-              <Welcome usuario={usuario} />
+              <CardInfo titulo={`Olá, ${usuario?.nome}`} subtitulo={"Bem-vindo de volta ao seu dashboard."} />
+              {/* <Welcome usuario={usuario} /> */}
               <RecentActivity />
               <Lockdown />
             </div>
