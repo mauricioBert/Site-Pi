@@ -124,42 +124,79 @@ const DetalhesSujes = () => {
               }
             />
 
-            <section>
-              <div></div>
-              <div>
-                <form className={styles.formulario}>
+            <section className={styles.section}>
+              <div style={{ flex: 3, maxHeight: "100%", minWidth: "70%" }}>
+                <form className={styles.formulario} style={{ height: "100%" }}>
                   {/* Linha 1 */}
                   <div className={styles.linha}>
                     <label htmlFor="nome">URL da solicitação:</label>
-                    <input type="text" id="nome" />
+                    <input type="text" id="nome" value="https://outlook.live.com/owa/?nlp=1&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c&deeplink=owa%2f&..." />
                   </div>
 
                   {/* Linha 2 */}
                   <div className={styles.linha}>
                     <label htmlFor="email">Data:</label>
-                    <input type="email" id="email" />
+                    <input type="email" id="email" value="16/05/2024" />
                   </div>
 
                   {/* Linha 3 */}
                   <div className={styles.linha}>
                     <label htmlFor="telefone">Motivo informado:</label>
-                    <input type="tel" id="telefone" />
+                    <input type="tel" id="telefone" value="Gostaria de bloquear pois existe conteúdo xyz no site, o que causa desconforto por ser ofensivo em relação a grup..." />
                   </div>
 
                   {/* Linha 4 */}
                   <div className={styles.linha}>
                     <label htmlFor="mensagem">Tipo de solicitação:</label>
-                    <input id="mensagem" rows="3" />
+                    <input id="mensagem" rows="3" value="Bloqueio" />
                   </div>
 
                   {/* Linha 5 - Visualização da imagem */}
-                  <div className={styles.linha}>
+                  <div className={styles.imagem}>
                     <img
-                      // src={fotoUrl}
+                      src="https://picsum.photos/seed/picsum/200/300"
                       alt="Foto do usuário"
                       className={styles.imagem}
                     />
+                    <div>
+                      <h3>
+                        img_whatsapp_8587.png
+                      </h3>
+                      <p>
+                        <span>Download</span> | 8.67mb
+                      </p>
+
+                    </div>
                   </div>
+                </form>
+              </div>
+
+              <div style={{ flex: 1, maxHeight: "100%", minWidth: "26.5%" }}>
+                <form style={{ maxHeight: "100%", minWidth: "85%" }}>
+                  <div className={styles.formulario} style={{ marginBottom: '25px' }}>
+                    {/* Linha 1 */}
+                    <div className={styles.linha} >
+                      <label style={{ width: "100%" }} htmlFor="nome">Informações do Solicitante</label>
+                      <input type="text" id="nome" value="https://outlook.live.com/owa/?nlp=1&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c&deeplink=owa%2f&..." />
+                      <input type="email" id="email" value="16/05/2024" />
+                    </div>
+                  </div>
+                  <div className={styles.formulario} style={{ marginBottom: '25px' }}>
+                    <div className={styles.linha} >
+                      <label style={{ width: "100%" }} htmlFor="nome">Situação da Solicitação</label>
+                      <div className={styles.linha}>
+                        <input style={{flex:"none",minWidth:"unset"}}  className={styles.radioCustom} type="radio" id="bloquear" name="situacao" value="bloquear" />
+                        <label htmlFor="bloquear">Bloquear</label>
+                      </div>
+
+                      <div className={styles.linha}>
+                        <input style={{flex:"none",minWidth:"unset"}} className={styles.radioCustom} type="radio" id="desbloquear" name="situacao" value="desbloquear" />
+                        <label htmlFor="desbloquear">Desbloquear</label>
+                      </div>
+
+                    </div>
+                  </div>
+                  <input className={styles.input} type="submit" value="Salvar" />
                 </form>
               </div>
             </section>
