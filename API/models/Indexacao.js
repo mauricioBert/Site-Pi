@@ -11,6 +11,6 @@ const indexacaoSchema = new mongoose.Schema({
   flag: { type: Boolean, default: true }
 });
 
-const Indexacao = mongoose.model("Indexacoe", indexacaoSchema);
+const Indexacao = mongoose.model("Indexacoes", indexacaoSchema);
 
 export default Indexacao;

@@ -177,8 +177,8 @@ const DetalhesSujes = () => {
                     {/* Linha 1 */}
                     <div className={styles.linha} >
                       <label style={{ width: "100%" }} htmlFor="nome">Informações do Solicitante</label>
-                      <input type="text" id="nome" value="https://outlook.live.com/owa/?nlp=1&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c&deeplink=owa%2f&..." />
-                      <input type="email" id="email" value="16/05/2024" />
+                      <input type="text" id="nome" value="Bruno Freitas de Oliveira" />
+                      <input type="date" id="email" value="16/05/2024" />
                     </div>
                   </div>
                   <div className={styles.formulario} style={{ marginBottom: '25px' }}>

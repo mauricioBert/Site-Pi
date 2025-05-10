@@ -8,7 +8,6 @@ import userService from '../services/userService.js';
       res.status(400).json({ message: error.message });
     }
   }
-
   const getAllUsers = async (req, res) => {
     try {
       const users = await userService.getAllUsers("-senha"); // Exclui a senha
