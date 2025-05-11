@@ -7,16 +7,13 @@ import axios from "axios";
 import url from "@/services/url"; // Supondo que o url seja o serviço para a API
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ListSujestao from "@/components/ListaSujestao";
+import ListSujestao from "@/components/ListaSugestao";
 import styles from "./style.module.css";
 import { Container } from "postcss";
 import CardInfo from "@/components/card/card";
-
+import { useParams } from "next/navigation";
 const DetalhesSujes = () => {
-  const [urlInput, setUrlInput] = useState("");
-  const [termoInput, setTermoInput] = useState("");
-  const [periodoInput, setPeriodoInput] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+ const {id} = useParams();
   const router = useRouter();
   const [usuario, setUsuario] = useState(null);
   const [isMounted, setIsMounted] = useState(false);

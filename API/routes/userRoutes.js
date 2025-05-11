@@ -8,7 +8,7 @@ const router = express.Router()
 router.post("/user", userController.createUser);
 
 // Rota para listar todos os usuários
-router.get("/users", Auth, userController.getAllUsers);
+router.get("/users", userController.getAllUsers);
 
 // Rota para buscar um usuário por ID
 router.get("/user/:id", Auth, userController.getUserById);

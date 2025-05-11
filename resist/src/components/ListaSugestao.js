@@ -4,10 +4,26 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
+const teste =[{
+  "idUser": 1,
+  "dataHora": "1715395200000",
+  "url":"https",
+  "motivo":"preto",
+  "tipo":"Preto",
+  "situacao":true,
+  "foto":"preto"
+},
+{ "idUser": 1,
+  "dataHora": "1715395200000",
+  "url":"https",
+  "motivo":"preto",
+  "tipo":"Preto",
+  "situacao":true,
+  "foto":"preto"}
+]
+
 const ListSujestao = () => {
-  const [bloqueios, setBloqueios] = useState([]);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [selectedBloqueio, setSelectedBloqueio] = useState(null);
+  const [sugestao, setsugestao] = useState([]);
 
   // Formatar data para o formato desejado (DD/MM/YYYY)
   const formatarData = (dataIso) => {
@@ -18,72 +34,20 @@ const ListSujestao = () => {
     return `${dia}/${mes}/${ano}`;
   };
 
-  // Função para buscar os bloqueios (agora sem filtro de flag)
-  const fetchBloqueios = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.get(`${url}/bloqueios`);
-      setBloqueios(response.data);
-    } catch (error) {
-      console.error("Error fetching bloqueios:", error);
-    }
-  };
+  // Função para buscar as sugestao 
 
-  // Função para deletar uma indexacao
-  // const handleDeleteIndexacao = async (bloqueioId) => {
-  //   if(window.confirm("Tem certeza que deseja excluir este bloqueio?")) {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  //       const response = await axios.delete(`${url}/bloqueios/${bloqueioId}`);
-  //       if(response.status === 204) {
-  //         alert("Indexação excluída com sucesso!");
-  //         fetchBloqueios(); // Atualiza a lista após excluir
-  //       } else {
-  //         alert("Erro ao excluir a indexação!");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error deleting indexacao:", error);
-  //       alert("Erro ao excluir a indexação!");
-  //     }
-  //   }
-  // };
-
-  // // Função para confirmar e executar a troca de status
-  // const handleToggleConfirm = async () => {
-  //   if (!selectedBloqueio) return;
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  //     const response = await axios.put(
-  //       `${url}/bloqueios/${selectedBloqueio._id}`,
-  //       {
-  //         flag: !selectedBloqueio.flag,
-  //       }
-  //     );
-
-  //     if (response.data.success) {
-  //       fetchBloqueios();
-  //     }
-  //   } catch (error) {
-  //     console.error("Erro ao atualizar bloqueio:", error);
-  //     alert("Erro ao atualizar o status do bloqueio");
-  //   } finally {
-  //     setShowConfirmDialog(false);
-  //     setSelectedBloqueio(null);
-  //   }
-  // };
-
-  // Função para abrir o diálogo de confirmação
-  const handleStatusChange = (bloqueio) => {
-    setSelectedBloqueio(bloqueio);
-    setShowConfirmDialog(true);
-  };
-
+  
   useEffect(() => {
-    fetchBloqueios();
-  }, []);
+    const listarSugestao = async ()=> {
+      try{
+        const resposta = await axios.get(`${url}/sugestao`)
+        setsugestao(resposta.data)
+      }catch(error){
+      console.log(error)
+    }
+    }
+    listarSugestao();
+  });
 
   return (
     <div className="flex flex-col overflow-x-auto col-span-3">
@@ -105,27 +69,28 @@ const ListSujestao = () => {
             </tr>
           </thead>
           <tbody className="text-azul-text">
-  {bloqueios.map((bloq) => (
+  {sugestao.map((bloq) => (
     <tr
       key={bloq._id}
-      onClick={() => window.location.href = `/DetalhesSujes/detalhesSujes`} // `/detalhes/${bloq._id}`
+      onClick={() => window.location.href = `/DetalhesSujes/detalhesSujes/${bloq._id}`} // `/detalhes/${bloq._id}`
       className="border-b border-black text-sm text-center cursor-pointer hover:bg-blue-100 transition-colors"
     >
       <td className="p-2 font-bold max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
-        {bloq.urlWeb}
+        {bloq.url}
       </td>
       <td className="p-2 whitespace-nowrap">
         {formatarData(bloq.dataHora)}
       </td>
       <td className="p-2 font-bold">
-        {bloq.tipoInsercao}
+        {bloq.motivo}
       </td>
       <td className="p-2">
-        {bloq.flag ? "Bloqueado" : "Desbloqueado"}
+        {bloq.tipo}
       </td>
       <td className="p-2">
-        {/* coluna opcional */}
+        {bloq.situacao ? "Bloqueado" : "Desbloqueado"}
       </td>
+      
     </tr>
   ))}
 </tbody>
@@ -135,7 +100,7 @@ const ListSujestao = () => {
       </div>
 
       {/* Modal de Confirmação */}
-      {showConfirmDialog && (
+      {/* {showConfirmDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-lg font-bold mb-4">Confirmar Alteração</h3>
@@ -158,8 +123,8 @@ const ListSujestao = () => {
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div> 
+      )}*/}
     </div>
   );
 };

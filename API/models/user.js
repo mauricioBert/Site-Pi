@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     telefone:{type: String},
     foto:{type: String},
     instituicao: {instituicaoSchema},
-    permissoes: [{type: String}]
+    permissoes: [{type: String}],
 })
 
 const User = mongoose.model('funcionario', userSchema)
