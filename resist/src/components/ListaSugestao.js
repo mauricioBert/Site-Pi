@@ -3,7 +3,7 @@ import url from "../services/url";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/router";
 const teste =[{
   "idUser": 1,
   "dataHora": "1715395200000",
@@ -24,7 +24,7 @@ const teste =[{
 
 const ListSujestao = () => {
   const [sugestao, setsugestao] = useState([]);
-
+  const router = useRouter();
   // Formatar data para o formato desejado (DD/MM/YYYY)
   const formatarData = (dataIso) => {
     const data = new Date(dataIso);
@@ -47,7 +47,14 @@ const ListSujestao = () => {
     }
     }
     listarSugestao();
-  });
+  },[]);
+
+  const handleEdit = (sugestao) =>{
+    router.push({
+      pathname: "DetalhesSuges/detalhesSuges",
+      query:{id:sugestao._id}
+    })
+  }
 
   return (
     <div className="flex flex-col overflow-x-auto col-span-3">
@@ -71,8 +78,7 @@ const ListSujestao = () => {
           <tbody className="text-azul-text">
   {sugestao.map((bloq) => (
     <tr
-      key={bloq._id}
-      onClick={() => window.location.href = `/DetalhesSujes/detalhesSujes/${bloq._id}`} // `/detalhes/${bloq._id}`
+      onClick={() => handleEdit(bloq)} // `/detalhes/${bloq._id}`
       className="border-b border-black text-sm text-center cursor-pointer hover:bg-blue-100 transition-colors"
     >
       <td className="p-2 font-bold max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -98,33 +104,6 @@ const ListSujestao = () => {
 
         </table>
       </div>
-
-      {/* Modal de Confirmação */}
-      {/* {showConfirmDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold mb-4">Confirmar Alteração</h3>
-            <p>
-              Deseja alterar o status do bloqueio para{" "}
-              {selectedBloqueio?.flag ? "desbloqueado" : "bloqueado"}?
-            </p>
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="px-4 py-2 bg-gray-200 rounded"
-                onClick={() => setShowConfirmDialog(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                className="px-4 py-2 bg-azul-buttom text-white rounded"
-                onClick={handleToggleConfirm}
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div> 
-      )}*/}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import BlockList from "@/components/BlockList";
 import FooterContent from "@/components/FooterContent";
 import HeaderBar from "@/components/HeaderBar";
 import NavBar from "@/components/NavBar";
@@ -7,61 +6,88 @@ import axios from "axios";
 import url from "@/services/url"; // Supondo que o url seja o serviço para a API
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ListSujestao from "@/components/ListaSugestao";
 import styles from "./style.module.css";
-import { Container } from "postcss";
 import CardInfo from "@/components/card/card";
-import { useParams } from "next/navigation";
+
 const DetalhesSujes = () => {
- const {id} = useParams();
+  const formatarData = (dataIso) => {
+    const data = new Date(dataIso);
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  };
   const router = useRouter();
+  const { id } = router.query;
+  const [sugestao, setSugestao] = useState(null);
   const [usuario, setUsuario] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [formValues, setFormValues] = useState({
+    id: "",
+    idUser: "",
+    dataHora: "",
+    url: "",
+    motivo: "",
+    tipo: "",
+    situacao: "",
+    foto: "",
+    nome: "",
+    email: ""
+  })
 
-  // Função para adicionar um novo bloqueio manual
-  // const adicionarBloqueioManual = async () => {
-  //   const token = localStorage.getItem("token"); // Pegue o token armazenado
-  //   if (!urlInput) {
-  //     alert("A URL é obrigatória!");
-  //     return;
-  //   }
+  useEffect(() => {
+    const fetchSugestao = async () => {
+      if (id) {
+        try {
+          const response = await axios.get(`${url}/sugestao/${id}`)
+          const selectedSugestao = response.data;
+          setSugestao(selectedSugestao);
+          setFormValues({
+            id: selectedSugestao._id,
+            idUser: selectedSugestao.idUser,
+            dataHora: selectedSugestao.dataHora,
+            url: selectedSugestao.url,
+            motivo: selectedSugestao.motivo,
+            tipo: selectedSugestao.tipo,
+            situacao: selectedSugestao.situacao,
+            foto: selectedSugestao.foto,
+            nome: selectedSugestao.nome,
+            email: selectedSugestao.email
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+    fetchSugestao();
+  }, [id]);
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: type === "radio" ? value === "true" : value,
+    }));
+  };
 
-  //   setIsSubmitting(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedData = { situacao: formValues.situacao };
 
-  //   try {
-  //     const novoBloqueio = {
-  //       url: urlInput,
-  //       urlWeb: urlInput,
-  //       motivo: termoInput || "Bloqueio Manual",
-  //       periodo: periodoInput || "Indefinido",
-  //       tipoInsercao: "Manual",
-  //       ipMaquina: "192.168.1.1",
-  //       dataHora: new Date().toISOString(),
-  //       flag: true,
-  //     };
+    try {
+      const response = await axios.put(
+        `${url}/sugestao/${id}`,
+        updatedData
+      );
+      if (response.status === 200) {
+        alert("Sugestão atualizado!");
+        router.push("/sugestao");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  //     const token = localStorage.getItem("token");
-  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  //     const response = await axios.post(`${url}/bloqueios`, novoBloqueio);
-
-  //     if (response.data.success) {
-  //       setUrlInput("");
-  //       setTermoInput("");
-  //       setPeriodoInput("");
-  //       alert("Bloqueio adicionado com sucesso!");
-  //       window.location.reload();
-  //     }
-  //   } catch (error) {
-  //     console.error("Erro ao adicionar o bloqueio:", error);
-  //     alert(
-  //       error.response?.data?.error ||
-  //         "Erro ao adicionar o bloqueio. Por favor, tente novamente."
-  //     );
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,43 +147,46 @@ const DetalhesSujes = () => {
               }
             />
 
-            <section className={styles.section}>
+            <form className={styles.section} onSubmit={handleSubmit}>
               <div style={{ flex: 3, maxHeight: "100%", minWidth: "70%" }}>
-                <form className={styles.formulario} style={{ height: "100%" }}>
-                  {/* Linha 1 */}
+                <div className={styles.formulario} style={{ height: "100%" }}>
+
                   <div className={styles.linha}>
                     <label htmlFor="nome">URL da solicitação:</label>
-                    <input type="text" id="nome" value="https://outlook.live.com/owa/?nlp=1&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c&deeplink=owa%2f&..." />
+                    <input type="text" id="nome" value={formValues.url} disabled onChange={handleChange} />
                   </div>
 
-                  {/* Linha 2 */}
                   <div className={styles.linha}>
                     <label htmlFor="email">Data:</label>
-                    <input type="email" id="email" value="16/05/2024" />
+                    <input type="text" id="dataHora" value={formatarData(formValues.dataHora)} disabled onChange={handleChange}
+                    />
+
                   </div>
 
-                  {/* Linha 3 */}
                   <div className={styles.linha}>
                     <label htmlFor="telefone">Motivo informado:</label>
-                    <input type="tel" id="telefone" value="Gostaria de bloquear pois existe conteúdo xyz no site, o que causa desconforto por ser ofensivo em relação a grup..." />
+                    <input type="text" id="telefone" value={formValues.motivo} disabled onChange={handleChange} />
                   </div>
 
-                  {/* Linha 4 */}
                   <div className={styles.linha}>
                     <label htmlFor="mensagem">Tipo de solicitação:</label>
-                    <input id="mensagem" rows="3" value="Bloqueio" />
+                    <input id="mensagem" rows="3" value={formValues.tipo} disabled onChange={handleChange} />
                   </div>
 
-                  {/* Linha 5 - Visualização da imagem */}
+
+
+
                   <div className={styles.imagem}>
+
                     <img
-                      src="https://picsum.photos/seed/picsum/200/300"
-                      alt="Foto do usuário"
+                      src={formValues.foto || "https://gru.ifsp.edu.br/images/phocagallery/galeria2/thumbs/phoca_thumb_l_image03_grd.png"}
                       className={styles.imagem}
                     />
+
+
                     <div>
                       <h3>
-                        img_whatsapp_8587.png
+                        {formValues.foto}
                       </h3>
                       <p>
                         <span>Download</span> | 8.67mb
@@ -165,38 +194,42 @@ const DetalhesSujes = () => {
 
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
 
               <div style={{ flex: 1, maxHeight: "100%", minWidth: "26.5%" }}>
-                <form style={{ maxHeight: "100%", minWidth: "85%" }}>
+                <div style={{ maxHeight: "100%", minWidth: "85%" }}>
                   <div className={styles.formulario} style={{ marginBottom: '25px' }}>
-                    {/* Linha 1 */}
+
                     <div className={styles.linha} >
                       <label style={{ width: "100%" }} htmlFor="nome">Informações do Solicitante</label>
-                      <input type="text" id="nome" value="Bruno Freitas de Oliveira" />
-                      <input type="date" id="email" value="16/05/2024" />
+                      <input type="text" id="nome" value={formValues.nome} disabled />
+                      <input type="text" id="email" value={formValues.email} disabled />
                     </div>
                   </div>
                   <div className={styles.formulario} style={{ marginBottom: '25px' }}>
                     <div className={styles.linha} >
                       <label style={{ width: "100%" }} htmlFor="nome">Situação da Solicitação</label>
                       <div className={styles.linha}>
-                        <input style={{flex:"none",minWidth:"unset"}}  className={styles.radioCustom} type="radio" id="bloquear" name="situacao" value="bloquear" />
+                        <input
+                          style={{ flex: "none", minWidth: "unset" }}
+                          className={styles.radioCustom}
+                          type="radio" id="bloquear" name="situacao" value="true" checked={formValues.situacao === true} onChange={(e) => setFormValues({ ...formValues, situacao: e.target.value === "true" })}
+                        />
                         <label htmlFor="bloquear">Bloquear</label>
                       </div>
 
                       <div className={styles.linha}>
-                        <input style={{flex:"none",minWidth:"unset"}} className={styles.radioCustom} type="radio" id="desbloquear" name="situacao" value="desbloquear" />
+                        <input style={{ flex: "none", minWidth: "unset" }} className={styles.radioCustom} type="radio" id="desbloquear" name="situacao" checked={formValues.situacao === false} onChange={(e) => setFormValues({ ...formValues, situacao: e.target.value === "true" })} />
                         <label htmlFor="desbloquear">Desbloquear</label>
                       </div>
 
                     </div>
                   </div>
                   <input className={styles.input} type="submit" value="Salvar" />
-                </form>
+                </div>
               </div>
-            </section>
+            </form>
           </section>
         </section>
       </section>

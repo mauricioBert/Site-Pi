@@ -1,5 +1,5 @@
 import Sugestao from '../models/sugestao.js';
-
+import User from '../models/user.js'
 class SugestaoService {
   async getAll() {
     try{
@@ -10,14 +10,21 @@ class SugestaoService {
     }
   }
 
-  async getOne(id){
-    try{
-      const sugestao = await Sugestao.findById(id)
-      return sugestao
-    }catch(error){
-      console.log(error)
-    }
+async getOne(id) {
+  try {
+    const sugestao = await Sugestao.findById(id).lean(); // .lean() para retornar um objeto simples
+    const user = await User.findById(sugestao.idUser).lean();
+
+    return {
+      ...sugestao,
+      nome: user.nome,
+      email: user.email
+    };
+  } catch (error) {
+    console.log(error);
   }
+}
+
 
   async update(id,idUser,url,motivo,tipo,situacao,foto){
     try{

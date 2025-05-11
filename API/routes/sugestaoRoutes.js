@@ -6,6 +6,6 @@ const router = express.Router()
 
 
 router.get('/sugestao', sugestaoController.getAllSugestao)
-router.get('/sugestao/:id', Auth,sugestaoController.getOneSugestao)
-router.put('/sugestao/:id', Auth,sugestaoController.updateSugestao)
+router.get('/sugestao/:id', sugestaoController.getOneSugestao)
+router.put('/sugestao/:id', sugestaoController.updateSugestao)
 export default router;
