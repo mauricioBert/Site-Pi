@@ -214,7 +214,12 @@ const DetalhesSujes = () => {
                         <input
                           style={{ flex: "none", minWidth: "unset" }}
                           className={styles.radioCustom}
-                          type="radio" id="bloquear" name="situacao" value="true" checked={formValues.situacao === true} onChange={(e) => setFormValues({ ...formValues, situacao: e.target.value === "true" })}
+                          type="radio"
+                           id="bloquear" 
+                           name="situacao" 
+                           value="true" 
+                           checked={formValues.situacao === true} 
+                           onChange={(e) => setFormValues({ ...formValues, situacao: e.target.value === "true" })}
                         />
                         <label htmlFor="bloquear">Bloquear</label>
                       </div>

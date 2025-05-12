@@ -1,5 +1,16 @@
 import sugestaoService from "../services/sugestaoService.js";
 import { ObjectId } from "mongodb";
+
+const  createSugestao= async (req, res) => {
+    try {
+      const sugestao = await sugestaoService.createSugestao(req.body);
+      res.status(201).json(sugestao);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+
 const  getAllSugestao= async (req, res) => {
     try {
       const sugestao = await sugestaoService.getAll();
@@ -39,5 +50,5 @@ const updateSugestao = async (req,res)=>{
   }
 }
   export default {
-    getAllSugestao,updateSugestao,getOneSugestao
+    getAllSugestao,updateSugestao,getOneSugestao,createSugestao
   };

@@ -1,6 +1,30 @@
 import Sugestao from '../models/sugestao.js';
 import User from '../models/user.js'
 class SugestaoService {
+
+  async createSugestao(data) {
+    try{
+      if(!data.url || !data.idUser){
+        throw new Error("Campos obrigatórios não preenchidos");
+        return null
+      }
+      const sugestaoDatas= {
+        idUser: data.idUser,
+        dataHora: new Date(),
+        url: data.url,
+        motivo: data.motivo || "Valor não preenchido",
+        situacao: data.situacao,
+        foto: data.foto || " "
+    };
+    const novaSuGestao = new Sugestao(sugestaoDatas)
+    return await novaSuGestao.save();
+
+    }catch(error){
+      console.log(error)
+    }
+  
+  }
+
   async getAll() {
     try{
       const sugestao =await Sugestao.find()

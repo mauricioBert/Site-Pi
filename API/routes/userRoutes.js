@@ -21,5 +21,4 @@ router.delete("/user/:id", Auth, userController.deleteUser);
 
 router.post('/login', authController.login);
 
-
 export default router;
